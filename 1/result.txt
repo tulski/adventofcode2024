@@ -1,0 +1,6 @@
+
+> @tulski/adventofcode2024@0.0.1 start:1
+> tsx index.ts
+
+Part one:  1889772
+Part two:  23228917
