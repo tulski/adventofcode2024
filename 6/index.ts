@@ -156,12 +156,45 @@ const loadInput = (rawFields: string[][]) => {
 
     return {map, guard};
 }
+const deduplicate = (positions: Coordinates[]): Coordinates[] => {
+    const map = new Map<string, Coordinates>();
+    for (const position of positions) {
+        const key = `${position.row},${position.column}`;
+        map.set(key, position);
+    }
+    return [...map.values()];
+}
+const isMoveForward = (before: Guard, after: Guard) => {
+    return before.direction === after.direction;
+}
 
 const rawFields = input.split('\n').map(line => line.trim().split("")).filter(el => el.length > 0);
 
 const {map, guard} = loadInput(rawFields);
 const history = Game.play(map, guard).history;
 
-const uniquePlaces = new Set(history.map(g => `${g.position.row},${g.position.column}`));
-console.log('Part one: ', uniquePlaces.size);
+const uniquePlaces = deduplicate(history.map(h => h.position));
+console.log('Part one: ', uniquePlaces.length);
+
+const potentialPlacesForTimeParadox: Coordinates[] = [];
+for (let i = 0; i < history.length - 1; i++) {
+    const before = history[i];
+    const after = history[i + 1];
+    if (isMoveForward(before, after)) {
+        potentialPlacesForTimeParadox.push(after.position);
+    }
+}
+
+const timeParadoxPlace: Coordinates[] = [];
+
+for (const potentialPlace of deduplicate(potentialPlacesForTimeParadox)) {
+    const newMap = [...map.map(row => ([...row]))];
+    newMap[potentialPlace.row][potentialPlace.column] = PlayingField.OBSTRUCTION;
+    const result = Game.play(newMap, guard);
+    if (result.timeParadox) {
+        timeParadoxPlace.push(potentialPlace);
+    }
+}
+
+console.log('Part two: ', timeParadoxPlace.length);
 
