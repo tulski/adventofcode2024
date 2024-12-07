@@ -1,0 +1,17 @@
+{
+  "name": "@tulski/adventofcode2024",
+  "version": "0.0.7",
+  "description": "Day 7 - Advent Of Code 2024",
+  "main": "index.ts",
+  "scripts": {
+    "start:7": "tsx index.ts"
+  },
+  "author": "tulski",
+  "license": "ISC",
+  "type": "module",
+  "devDependencies": {
+    "@types/node": "^22.10.1",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2"
+  }
+}
